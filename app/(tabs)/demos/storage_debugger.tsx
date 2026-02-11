@@ -7,6 +7,7 @@ import { Button } from "react-native-paper";
 export function StorageDebugger() {
     const [data, setData] = useState<any>({});
 
+    // Load all persisted data from AsyncStorage into local state
     useEffect(() => {
         async function load() {
             const keys = await AsyncStorage.getAllKeys();
@@ -27,6 +28,7 @@ export function StorageDebugger() {
         load();
     }, []);
 
+    // Helper to clear local database
     const clearLocalDB = () => {
         Storage.clearAllSync();
         setData({});

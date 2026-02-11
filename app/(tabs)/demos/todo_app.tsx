@@ -4,6 +4,7 @@ import { PaperProvider, Text, TextInput, Button, Card } from "react-native-paper
 import { Storage } from "@/components/utilities/db";
 import { TodoList } from "@/components/ui/TodoList";
 
+// Todo item type
 type Todo = {
     id: string;
     name: string;
@@ -11,16 +12,19 @@ type Todo = {
 };
 
 export default function TodoApp() {
+    // Todo list state data, hydrated from Storage
     const [todos, setToDos] = React.useState<Todo[]>(Storage.loadDataSync('todos') as Todo[] || []);
 
-    // 3) Local form state (input field)
+    // Text input for new Todo
     const [text, setText] = React.useState("");
 
+    // Helper to update local state and persist to Storage
     const updateTodos = (newTodos: Todo[]) => {
         setToDos(newTodos);
         Storage.saveDataSync('todos', newTodos);
     };
 
+    // Cleans the text, makes and adds a new Todo element
     const addTodo = () => {
         const trimmed = text.trim();
         if (!trimmed) return;
@@ -35,10 +39,12 @@ export default function TodoApp() {
         setText("");
     };
 
+    // Checks off a Todo
     const toggleTodo = (id: string) => {
         updateTodos(todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)));
     };
 
+    // Deletes a Todo
     const deleteTodo = (id: string) => {
         updateTodos(todos.filter((t) => t.id !== id));
     };
